@@ -11,6 +11,7 @@ float secondNum;
 float answer;
 int dt = 1800;
 bool error;
+bool wrong;
 String op;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
@@ -23,6 +24,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   error = false;
+  wrong = false;
   Serial.println("Please enter your first number: ");
   lcd.setCursor(0, 0);
   lcd.print("First number: ");
@@ -101,6 +103,8 @@ void loop() {
     } else {
      answer = firstNum / secondNum;
     }
+  } else {
+    wrong = true;
   }
 
   if(error) {
@@ -111,7 +115,13 @@ void loop() {
     lcd.setCursor(0, 1);
     lcd.print("Divide by 0");
     delay(3000);
-  }else {
+  } else if(wrong) {
+    lcd.clear();
+    Serial.println("Error, please try again");
+    lcd.setCursor(0, 0);
+    lcd.print("Error");
+    delay(dt);
+  } else {
     Serial.print("The total is: ");
     Serial.println(answer);
 
